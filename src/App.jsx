@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Header from './components/Header.jsx';
 import CategoryTabs from './components/CategoryTabs.jsx';
 import ChannelCarousel from './components/ChannelCarousel.jsx';
@@ -6,8 +6,18 @@ import VideoPlayer from './components/VideoPlayer.jsx';
 import BackgroundAurora from './components/BackgroundAurora.jsx';
 
 export default function App() {
-  const [country, setCountry] = useState('Pakistan');
-  const [category, setCategory] = useState('Sports');
+  // Persisted country and category
+  const [country, setCountry] = useState(() => localStorage.getItem('vtv.country') || 'Pakistan');
+  const [category, setCategory] = useState(() => localStorage.getItem('vtv.category') || 'Sports');
+
+  useEffect(() => {
+    localStorage.setItem('vtv.country', country);
+  }, [country]);
+
+  useEffect(() => {
+    localStorage.setItem('vtv.category', category);
+  }, [category]);
+
   const channels = useMemo(() => baseChannels, []);
 
   const filtered = useMemo(() => {
